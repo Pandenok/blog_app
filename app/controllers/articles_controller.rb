@@ -5,6 +5,7 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = Article.all
+    @most_popular = Article.order('view_count DESC').first(3)
   end
 
   def show

@@ -1,3 +1,17 @@
+<h1>Most Popular Articles</h1>
+
+<ul id = "articles">
+  <% @most_popular.each do |article| %>
+    <li>
+      <%= link_to article.title, article_path(article) %>
+    </li>
+  <% end %>
+</ul>
+
+<br />
+<br />
+<br />
+
 <h1>All Articles</h1>
 
 <ul id = "articles">
@@ -8,6 +22,8 @@
     </li>
   <% end %>
 </ul>
+
+<br />
 
 <% if logged_in? %>
   <%= link_to "Create a New Article", new_article_path, class: "new_article" %>
