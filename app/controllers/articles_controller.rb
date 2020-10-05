@@ -30,14 +30,22 @@ class ArticlesController < ApplicationController
 
   def destroy
     @article = Article.find(params[:id])
-    @article.destroy
-    flash.notice = "Article '#{@article.title}' Deleted!"
-
-    redirect_to articles_path
+    if @article.author_id != current_user.id
+      flash.notice = "You don't have permissions to delete this article"
+      redirect_to article_path(@article)
+    else
+      @article.destroy
+      flash.notice = "Article '#{@article.title}' Deleted!"
+      redirect_to articles_path
+    end
   end
 
   def edit
     @article = Article.find(params[:id])
+    unless @article.author_id == current_user.id
+      flash.notice = "You don't have permissions to edit this article"
+      redirect_to article_path(@article)
+    end
   end
 
   def update
