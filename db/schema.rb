@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_04_195155) do
+ActiveRecord::Schema.define(version: 2020_10_05_191252) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "articles", force: :cascade do |t|
     t.string "title"
@@ -22,6 +25,7 @@ ActiveRecord::Schema.define(version: 2020_10_04_195155) do
     t.integer "image_file_size"
     t.datetime "image_updated_at"
     t.integer "view_count", default: 0
+    t.integer "author_id"
   end
 
   create_table "authors", force: :cascade do |t|
@@ -37,15 +41,15 @@ ActiveRecord::Schema.define(version: 2020_10_04_195155) do
   create_table "comments", force: :cascade do |t|
     t.string "author_name"
     t.text "body"
-    t.integer "article_id"
+    t.bigint "article_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["article_id"], name: "index_comments_on_article_id"
   end
 
   create_table "taggings", force: :cascade do |t|
-    t.integer "tag_id"
-    t.integer "article_id"
+    t.bigint "tag_id"
+    t.bigint "article_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["article_id"], name: "index_taggings_on_article_id"
@@ -58,4 +62,7 @@ ActiveRecord::Schema.define(version: 2020_10_04_195155) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "comments", "articles"
+  add_foreign_key "taggings", "articles"
+  add_foreign_key "taggings", "tags"
 end
